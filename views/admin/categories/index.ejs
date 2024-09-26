@@ -1,0 +1,53 @@
+<%- include("../../partials/header.ejs")%>
+
+<body>
+    <%- include("../../partials/navbar.ejs")%>
+
+    <div class="container"> <!--Início do container-->
+        
+        <hr>
+        <h2 class="text-center">Categorias</h2>
+        <a class="btn btn-success" href="/admin/categories/new">Criar nova categoria</a>
+        <hr>
+
+        <table class="table table-bordered"> <!--Início da tabela-->
+            <thead> <!--Início do cabeçalho da tabela-->
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Slug</th>
+                    <th>Ações</th>
+                </tr>
+            </thead> <!--Fim do cabeçalho da tabela-->
+            <tbody> <!--Início do corpo da tabela-->
+                <% categories.forEach(category => { %>
+                    <tr>
+                        <td><%= category.id %></td>
+                        <td><%= category.title %></td>
+                        <td><%= category.slug %></td>
+                        <td>
+                            <a class="btn btn-warning" href="/admin/categories/edit/<%=category.id%>">Editar</a>
+                            <form action="/categories/delete" method="post" style="display: inline;" onsubmit="confirmarDelecao(event, this)">
+                                <input type="hidden" name="id" value="<%= category.id%>">
+                                <button class="btn btn-danger" type="submit">Deletar</button>
+                            </form>
+                        </td>
+                    </tr>
+                <%})%>
+            </tbody> <!--Fim do corpo da tabela-->
+        </table> <!--Fim da tabela-->
+    </div> <!--Fim do container-->
+
+</body>
+
+<%- include("../../partials/footer.ejs")%>
+
+<script>
+    function confirmarDelecao(event, form) { // Função que será utilizada para confirmar se o usuário realmente quer deletar uma categoria ; 
+        event.preventDefault(); // Impedindo o envio do formulário ; 
+        let decision = confirm("Você deseja deletar a categoria? ") ; // Fazendo a confirmação na se o usuário realmente quer excluir a categoria ; 
+        if(decision) { // Se o usuário quiser deletar a categoria, o formulário será enviado ; 
+            form.submit() ; 
+        } 
+    }
+</script>
